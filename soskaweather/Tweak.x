@@ -117,7 +117,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
       [self.weatherLabel setFont:[UIFont systemFontOfSize:16.0 weight:4.0]];
       [self.weatherLabel setNumberOfLines:1];
-      [self.weatherLabel setText:@""];
+      [self.weatherLabel setText:@"KAKAPISI"];
       [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
       [self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 
