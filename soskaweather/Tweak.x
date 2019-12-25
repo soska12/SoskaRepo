@@ -113,19 +113,22 @@ static SBFLockScreenDateView *lockScreeenDateView;
 %property (retain) UILabel *weatherLabel;
 %new
   -(void)setupWeather {
+  	if(!self.weatherLabel) {
+  	  UIView *_dateView = [self valueForKey:@"_dateSubtitleView"];
+
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
       [self.weatherLabel setFont:[UIFont systemFontOfSize:16.0 weight:1.0]];
       [self.weatherLabel setNumberOfLines:1];
-      [self.weatherLabel setText:@"KAKAPISI"];
-      [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+      [self.weatherLabel setText:@""];
+      //[self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
       [self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 
       self.weatherConditionImage = [[UIImageView alloc] initWithFrame:CGRectZero];
       self.weatherConditionImage.contentMode = UIViewContentModeScaleAspectFit;
       self.weatherConditionImage.translatesAutoresizingMaskIntoConstraints = NO;
-      [self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+      //[self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
 
-      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(200, 0, self.bounds.size.width, 100)];
+      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(100, 0, self.bounds.size.width, 100)];
       self.weatherStackView.axis = UILayoutConstraintAxisHorizontal;
       self.weatherStackView.alignment = UIStackViewAlignmentCenter;
       self.weatherStackView.distribution = UIStackViewDistributionFill;
@@ -136,7 +139,8 @@ static SBFLockScreenDateView *lockScreeenDateView;
       [self.weatherStackView addArrangedSubview:self.weatherConditionImage];
       [self.weatherStackView addArrangedSubview:self.weatherLabel];
 
-      [self addSubview:self.weatherStackView];
+      [_dateView addSubview:self.weatherStackView];
+      }
   }
 
 
