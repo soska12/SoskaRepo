@@ -112,10 +112,8 @@ static SBFLockScreenDateView *lockScreeenDateView;
 %property (retain) UILabel *weatherLabel;
 %new
   -(void)setupWeather {
-    if(true) {
-
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-      [self.weatherLabel setFont:[UIFont systemFontOfSize:16.0 weight:4.0]];
+      [self.weatherLabel setFont:[UIFont systemFontOfSize:16.0 weight:1.0]];
       [self.weatherLabel setNumberOfLines:1];
       [self.weatherLabel setText:@"KAKAPISI"];
       [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
@@ -126,19 +124,18 @@ static SBFLockScreenDateView *lockScreeenDateView;
       self.weatherConditionImage.translatesAutoresizingMaskIntoConstraints = NO;
       [self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
 
-      self.weatherStackView = [[UIStackView alloc] init];
+      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(100, 0, self.bounds.size.width, 100)];
       self.weatherStackView.axis = UILayoutConstraintAxisHorizontal;
       self.weatherStackView.alignment = UIStackViewAlignmentCenter;
       self.weatherStackView.distribution = UIStackViewDistributionFill;
       self.weatherStackView.spacing = 0;
       self.weatherStackView.translatesAutoresizingMaskIntoConstraints = NO;
+      [self.weatherStackView setBackgroundColor:UIColor.redColor];
 
       [self.weatherStackView addArrangedSubview:self.weatherLabel];
       [self.weatherStackView addArrangedSubview:self.weatherConditionImage];
 
       [self addSubview:self.weatherStackView];
-
-    }
   }
 
 
