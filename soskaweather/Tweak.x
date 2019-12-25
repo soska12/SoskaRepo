@@ -152,7 +152,6 @@ static SBFLockScreenDateView *lockScreeenDateView;
       self.weatherStackView.spacing = 0;
       self.weatherStackView.translatesAutoresizingMaskIntoConstraints = NO;
 
-      [self.weatherStackView addArrangedSubview:self.fillerView];
       [self.weatherStackView addArrangedSubview:self.weatherLabel];
       [self.weatherStackView addArrangedSubview:self.weatherConditionImage];
 
