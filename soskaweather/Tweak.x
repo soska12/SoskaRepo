@@ -153,7 +153,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
       NSLayoutConstraint *YConstraint = [NSLayoutConstraint
                                              constraintWithItem:self.weatherStackView attribute:NSLayoutAttributeTop
                                              relatedBy:NSLayoutRelationEqual toItem:_dateView attribute:
-                                             NSLayoutAttributeTop multiplier:1.0 constant:100];
+                                             NSLayoutAttributeTop multiplier:1.0 constant:10];
 
       [_dateView addConstraint:centreHorizontallyConstraint];
       [_dateView addConstraint:YConstraint];
