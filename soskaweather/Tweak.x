@@ -117,7 +117,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
   	  UIView *_dateView = [self valueForKey:@"_dateSubtitleView"];
 
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-      [self.weatherLabel setFont:[UIFont systemFontOfSize:24.0 weight:1.0]];
+      [self.weatherLabel setFont:[UIFont systemFontOfSize:24.0 weight:UIFontWeightRegular]];
       [self.weatherLabel setNumberOfLines:1];
       [self.weatherLabel setText:@""];
       [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
@@ -153,7 +153,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
       NSLayoutConstraint *YConstraint = [NSLayoutConstraint
                                              constraintWithItem:self.weatherStackView attribute:NSLayoutAttributeTop
                                              relatedBy:NSLayoutRelationEqual toItem:_dateView attribute:
-                                             NSLayoutAttributeTop multiplier:1.0 constant:10];
+                                             NSLayoutAttributeTop multiplier:1.0 constant:25];
 
       [_dateView addConstraint:centreHorizontallyConstraint];
       [_dateView addConstraint:YConstraint];
