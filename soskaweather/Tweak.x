@@ -50,7 +50,7 @@ static BOOL RTL_IS_SET = NO;
 	}
 	self.weatherController = [[NSClassFromString(@"WALockscreenWidgetViewController") alloc] init];
 	[self addChildViewController:self.weatherController];
-	//[self.weatherController didMoveToParentViewController:self];
+	[self.weatherController didMoveToParentViewController:self];
 	[self.view addSubview:self.weatherController.view];
 
 	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.weatherController.view
@@ -59,15 +59,15 @@ static BOOL RTL_IS_SET = NO;
 			                                                toItem:self.view
 			                                             attribute:NSLayoutAttributeCenterY
 			                                            multiplier:1
-			                                              constant:20]];
+			                                              constant:0]];
 
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.weatherController.view
+	/*[self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.weatherController.view
 			                                             attribute:IS_RTL ? NSLayoutAttributeRight : NSLayoutAttributeLeft
 			                                             relatedBy:NSLayoutRelationEqual
 			                                                toItem:self.view
 			                                             attribute:IS_RTL ? NSLayoutAttributeRight : NSLayoutAttributeLeft
 			                                            multiplier:1
-			                                              constant:20]];
+			                                              constant:20]];*/
 }
 
 - (void)setContentAlpha:(CGFloat)alpha withSubtitleVisible:(BOOL)subtitleVisible {
