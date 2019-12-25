@@ -96,25 +96,6 @@ static SBFLockScreenDateView *lockScreeenDateView;
   }
 %end
 
-%hook SBPagedScrollView
-  -(void)layoutSubviews {
-    %orig;
-
-    if((self._keyboardOrientation == 3 || self._keyboardOrientation == 4)) {
-      if(self.currentPageIndex == 0) {
-        [lockScreeenDateView fadeOutSpeculumWithDuration:0.3 withDelay:0];
-      } else {
-        [lockScreeenDateView fadeInSpeculumWithDuration:0.3 withDelay:0];
-        [lockScreeenDateView setAlignment:0];
-      }
-
-    } else {
-      [lockScreeenDateView fadeInSpeculumWithDuration:0.3 withDelay:0];
-      //[lockScreeenDateView setAlignment:(int)speculumAlignment];
-    }
-  }
-%end
-
 %hook SBFLockScreenDateView
 -(id)initWithFrame:(CGRect)arg1 {
     return lockScreeenDateView = %orig;
@@ -134,7 +115,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
     if(true) {
 
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-      /*[self.weatherLabel setFont:[UIFont systemFontOfSize:speculumWeatherLabelSize weight:speculumWeatherLabelWeight*/
+      [self.weatherLabel setFont:[UIFont systemFontOfSize:16.0 weight:4.0]];
       [self.weatherLabel setNumberOfLines:1];
       [self.weatherLabel setText:@""];
       [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
@@ -176,13 +157,6 @@ static SBFLockScreenDateView *lockScreeenDateView;
 
       self.weatherLabel.text = temperatureValue;
 
-      /*if(speculumWeatherUseConditionDescriptions) {
-        self.weatherLabel.text = [[NSString stringWithFormat:@"%@, ", [self conditionDescriptionWithCode:city.conditionCode]] stringByAppendingString:self.weatherLabel.text];
-
-        if(speculumWeatherLabelLowercase) {
-          self.weatherLabel.text = [self.weatherLabel.text lowercaseString];
-        }
-      }*/
 
       if([%c(WeatherImageLoader) respondsToSelector:@selector(conditionImageNamed:size:cloudAligned:stroke:strokeAlpha:lighterColors:)]) {
         NSString *weatherConditionName = [%c(WeatherImageLoader) conditionImageNameWithConditionIndex:city.conditionCode];
@@ -195,8 +169,6 @@ static SBFLockScreenDateView *lockScreeenDateView;
     }
   }
 
-  //Packetfahrer - WeatherBanners
-  //https://github.com/Packetfahrer/WeatherBanners/blob/b90ba1cb890aef0249a62e3d1d10d22037da97df/Tweak.xm#L69
 %new
   -(void)updateWeatherForCity {
     City *city = [[%c(WeatherPreferences) sharedPreferences] localWeatherCity];
@@ -209,8 +181,6 @@ static SBFLockScreenDateView *lockScreeenDateView;
     }];
   }
 
-  //SniperGER - GlobalWarmingNoMore
-  //https://github.com/SniperGER/GlobalWarmingNoMore/blob/aed487b534007995bcd44597388680abf854b6c7/Editor/GWWeatherConditionParser.m
 %new
   -(NSString *)conditionNameWithCode:(int)condition {
     switch (condition) {
