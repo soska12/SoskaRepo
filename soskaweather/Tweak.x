@@ -140,6 +140,24 @@ static SBFLockScreenDateView *lockScreeenDateView;
       [self.weatherStackView addArrangedSubview:self.weatherLabel];
 
       [_dateView addSubview:self.weatherStackView];
+
+      NSLayoutConstraint *centreHorizontallyConstraint = [NSLayoutConstraint
+                                      constraintWithItem:self.weatherStackView
+                                      attribute:NSLayoutAttributeCenterX
+                                      relatedBy:NSLayoutRelationEqual
+                                      toItem:_dateView
+                                      attribute:NSLayoutAttributeCenterX
+                                      multiplier:1.0
+                                      constant:0];
+
+      NSLayoutConstraint *YConstraint = [NSLayoutConstraint
+                                             constraintWithItem:self.weatherStackView attribute:NSLayoutAttributeTop
+                                             relatedBy:NSLayoutRelationEqual toItem:_dateView attribute:
+                                             NSLayoutAttributeTop multiplier:1.0 constant:10];
+
+      [_dateView addConstraint:centreHorizontallyConstraint];
+      [_dateView addConstraint:YConstraint];
+
       }
   }
 
