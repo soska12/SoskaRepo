@@ -117,18 +117,18 @@ static SBFLockScreenDateView *lockScreeenDateView;
   	  UIView *_dateView = [self valueForKey:@"_dateSubtitleView"];
 
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-      [self.weatherLabel setFont:[UIFont systemFontOfSize:16.0 weight:1.0]];
+      [self.weatherLabel setFont:[UIFont systemFontOfSize:24.0 weight:1.0]];
       [self.weatherLabel setNumberOfLines:1];
       [self.weatherLabel setText:@""];
-      //[self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+      [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
       [self.weatherLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 
       self.weatherConditionImage = [[UIImageView alloc] initWithFrame:CGRectZero];
       self.weatherConditionImage.contentMode = UIViewContentModeScaleAspectFit;
       self.weatherConditionImage.translatesAutoresizingMaskIntoConstraints = NO;
-      //[self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+      [self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
 
-      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(220, 100, self.bounds.size.width, 100)];
+      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(220, 100, _dateView.bounds.size.width, 100)];
       self.weatherStackView.axis = UILayoutConstraintAxisHorizontal;
       self.weatherStackView.alignment = UIStackViewAlignmentCenter;
       self.weatherStackView.distribution = UIStackViewDistributionFill;
