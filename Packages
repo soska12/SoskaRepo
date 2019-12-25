@@ -1,0 +1,7 @@
+Package: com.yourcompany.soskaweather
+Name: SoskaWeather
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Test
+Filename: debs/com.yourcompany.soskaweather_0.0.1-4+debug_iphoneos-arm.deb
+MD5sum: d7c3c897972138d1fb2c45c439499adc

@@ -1,0 +1,10 @@
+Package: com.yourcompany.soskaweather
+Name: SoskaWeather
+Depends: mobilesubstrate
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Soós Ádám
+Author: Soós Ádám
+Section: Tweaks
+Version: 0.0.1-4+debug
+Installed-Size: 136
