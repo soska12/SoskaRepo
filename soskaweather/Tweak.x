@@ -104,6 +104,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
 -(void)didMoveToSuperview {
     %orig;
     [self setupWeather];
+    [lockScreeenDateView updateWeatherForCity];
   }
 
 %property (nonatomic, retain) UIView *weatherView;
@@ -124,7 +125,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
       self.weatherConditionImage.translatesAutoresizingMaskIntoConstraints = NO;
       [self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
 
-      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(100, 0, self.bounds.size.width, 100)];
+      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(200, 0, self.bounds.size.width, 100)];
       self.weatherStackView.axis = UILayoutConstraintAxisHorizontal;
       self.weatherStackView.alignment = UIStackViewAlignmentCenter;
       self.weatherStackView.distribution = UIStackViewDistributionFill;
@@ -132,8 +133,8 @@ static SBFLockScreenDateView *lockScreeenDateView;
       self.weatherStackView.translatesAutoresizingMaskIntoConstraints = NO;
       [self.weatherStackView setBackgroundColor:UIColor.redColor];
 
-      [self.weatherStackView addArrangedSubview:self.weatherLabel];
       [self.weatherStackView addArrangedSubview:self.weatherConditionImage];
+      [self.weatherStackView addArrangedSubview:self.weatherLabel];
 
       [self addSubview:self.weatherStackView];
   }
