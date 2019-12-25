@@ -111,7 +111,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
 #define _LOGOS_RETURN_RETAINED
 #endif
 
-@class SBFLockScreenDateView; @class WeatherPreferences; @class TWCLocationUpdater; @class WeatherImageLoader; @class SBDashBoardViewController; 
+@class WeatherPreferences; @class SBFLockScreenDateView; @class SBDashBoardViewController; @class WeatherImageLoader; @class TWCLocationUpdater; 
 static BOOL (*_logos_orig$_ungrouped$SBDashBoardViewController$_isWakeAnimationInProgress)(_LOGOS_SELF_TYPE_NORMAL SBDashBoardViewController* _LOGOS_SELF_CONST, SEL); static BOOL _logos_method$_ungrouped$SBDashBoardViewController$_isWakeAnimationInProgress(_LOGOS_SELF_TYPE_NORMAL SBDashBoardViewController* _LOGOS_SELF_CONST, SEL); static SBFLockScreenDateView* (*_logos_orig$_ungrouped$SBFLockScreenDateView$initWithFrame$)(_LOGOS_SELF_TYPE_INIT SBFLockScreenDateView*, SEL, CGRect) _LOGOS_RETURN_RETAINED; static SBFLockScreenDateView* _logos_method$_ungrouped$SBFLockScreenDateView$initWithFrame$(_LOGOS_SELF_TYPE_INIT SBFLockScreenDateView*, SEL, CGRect) _LOGOS_RETURN_RETAINED; static void (*_logos_orig$_ungrouped$SBFLockScreenDateView$didMoveToSuperview)(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBFLockScreenDateView$didMoveToSuperview(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBFLockScreenDateView$setupWeather(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBFLockScreenDateView$updateWeatherLabel(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); static void _logos_method$_ungrouped$SBFLockScreenDateView$updateWeatherForCity(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL); static NSString * _logos_method$_ungrouped$SBFLockScreenDateView$conditionNameWithCode$(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL, int); static NSString * _logos_method$_ungrouped$SBFLockScreenDateView$conditionDescriptionWithCode$(_LOGOS_SELF_TYPE_NORMAL SBFLockScreenDateView* _LOGOS_SELF_CONST, SEL, int); 
 static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$WeatherPreferences(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("WeatherPreferences"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$WeatherImageLoader(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("WeatherImageLoader"); } return _klass; }static __inline__ __attribute__((always_inline)) __attribute__((unused)) Class _logos_static_class_lookup$TWCLocationUpdater(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("TWCLocationUpdater"); } return _klass; }
 #line 92 "Tweak.x"
@@ -154,7 +154,7 @@ __attribute__((used)) static UILabel * _logos_method$_ungrouped$SBFLockScreenDat
       self.weatherConditionImage.translatesAutoresizingMaskIntoConstraints = NO;
       
 
-      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(100, 0, self.bounds.size.width, 100)];
+      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(220, 100, self.bounds.size.width, 100)];
       self.weatherStackView.axis = UILayoutConstraintAxisHorizontal;
       self.weatherStackView.alignment = UIStackViewAlignmentCenter;
       self.weatherStackView.distribution = UIStackViewDistributionFill;

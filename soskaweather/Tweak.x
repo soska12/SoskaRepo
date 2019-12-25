@@ -128,7 +128,7 @@ static SBFLockScreenDateView *lockScreeenDateView;
       self.weatherConditionImage.translatesAutoresizingMaskIntoConstraints = NO;
       //[self.weatherConditionImage setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
 
-      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(100, 0, self.bounds.size.width, 100)];
+      self.weatherStackView = [[UIStackView alloc] initWithFrame:CGRectMake(220, 100, self.bounds.size.width, 100)];
       self.weatherStackView.axis = UILayoutConstraintAxisHorizontal;
       self.weatherStackView.alignment = UIStackViewAlignmentCenter;
       self.weatherStackView.distribution = UIStackViewDistributionFill;
