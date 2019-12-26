@@ -1,7 +1,38 @@
+#import <notify.h>
+
 @interface SBUILegibilityLabel : UIView
 @end
 
 @interface SBFLockScreenDateSubtitleView : UIView
+@end
+
+@interface WGWidgetGroupViewController : UIViewController
+@end
+
+@interface SpringBoard : UIApplication
++(id) sharedApplication;
+-(NSInteger) activeInterfaceOrientation;
+@end
+
+@interface SBDashBoardCombinedListViewController : UIViewController
+-(void) _updateListViewContentInset;
+-(void) _layoutListView;
+-(UIEdgeInsets) _listViewDefaultContentInsets;
+@end
+
+@interface CSCombinedListViewController : UIViewController
+-(void) _updateListViewContentInset;
+-(void) _layoutListView;
+-(UIEdgeInsets) _listViewDefaultContentInsets;
+@end
+
+@interface SBLockStateAggregator : NSObject
++(id) sharedInstance;
+-(unsigned long long)lockState;
+@end
+
+
+@interface SBDashBoardViewController : UITableViewController
 @end
 
 @interface SBFLockScreenDateView : UIView
@@ -75,19 +106,118 @@
 -(void)_updateWeatherForLocation:(id)arg1 city:(id)arg2 completionHandler:(/*^block*/id)arg3;
 @end
 
-  //Force allow content hugging priority
-@interface UILabel (Speculum)
--(void)setContentHuggingPriority:(float)arg1 forAxis:(NSInteger)arg2;
-@end
 
-@interface UIImageView (Speculum)
--(void)setContentHuggingPriority:(float)arg1 forAxis:(NSInteger)arg2;
+@interface SBUIProudLockIconView : UIView
+-(void)_configureAutolayoutFlagsNeedingLayout:(BOOL)arg1;
 @end
 
 
+static CGFloat notifListOffset = 30;
 
+// iOS 13 Support
+%hook CSCombinedListViewController
+-(UIEdgeInsets) _listViewDefaultContentInsets {
+    UIEdgeInsets originalInsets = %orig;
+
+    originalInsets.top += notifListOffset + 8;
+    originalInsets.bottom -= notifListOffset + 8;
+    return originalInsets;
+}
+
+-(void) _layoutListView {
+    %orig;
+    [self _updateListViewContentInset];
+}
+
+-(double) _minInsetsToPushDateOffScreen {
+    double orig = %orig;
+
+    
+    // Determine if in landscape and load associated Preferences
+
+    return orig + notifListOffset + 8;
+}
+%end
+
+%hook SBDashBoardCombinedListViewController
+-(id) initWithNibName:(id)arg1 bundle:(id)arg2 {
+    int notify_token2;
+    // Relayout on lockState change
+    notify_register_dispatch("com.yourcompany.soskaweather/notif", &notify_token2, dispatch_get_main_queue(), ^(int token) {
+        [self _layoutListView];
+    });
+    return %orig;
+}
+
+-(UIEdgeInsets) _listViewDefaultContentInsets {
+    UIEdgeInsets originalInsets = %orig;
+
+    originalInsets.top += notifListOffset;
+    return originalInsets;
+}
+
+-(void) _layoutListView {
+    %orig;
+    [self _updateListViewContentInset];
+}
+
+-(double) _minInsetsToPushDateOffScreen {
+    double orig = %orig;
+
+    
+    // Determine if in landscape and load associated Preferences
+
+    return orig + notifListOffset;
+}
+%end
+
+/*%hook SBLockStateAggregator
+-(void) _updateLockState {
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.yourcompany.soskaweather/notif"), nil, nil, true);
+    %orig;
+    // Send the command to relayout
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.yourcompany.soskaweather/notif"), nil, nil, true);
+}
+%end
+
+%hook SpringBoard
+
+-(void) noteInterfaceOrientationChanged:(long long)arg1 duration:(double)arg2 logMessage:(id)arg3 {
+    %orig;
+    //send command to relayout when device changes orientation
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.yourcompany.soskaweather/notif"), nil, nil, true);
+}
+
+%end*/
+
+
+static float NPL_x = 0.f;
+static float NPL_y = 0.f;
+static float NPL_origx;
+static float NPL_origy;
+
+%hook SBUIProudLockIconView
+-(void)layoutSubviews {
+  %orig;
+    NPL_origx = (NPL_origx) ? NPL_origx : self.frame.origin.x;
+    NPL_origy = (NPL_origy) ? NPL_origy : self.frame.origin.y;
+    self.frame = CGRectMake(NPL_origx + NPL_x, NPL_origy + NPL_y, self.frame.size.width, self.frame.size.height);
+    // Thanks to https://github.com/MDausch/LatchKey for the idea for this next part
+    UIView *vw = self;
+        while (vw) {
+            for (NSLayoutConstraint *constraint in vw.constraints)
+                if (constraint.firstItem == self || constraint.secondItem == self) [vw removeConstraint:constraint];
+            vw = vw.superview;
+        }
+        self.translatesAutoresizingMaskIntoConstraints = YES;
+        [self _configureAutolayoutFlagsNeedingLayout:NO];
+}
+
+%end
 
 static SBFLockScreenDateView *lockScreeenDateView;
+
+static CGFloat yOffset = 0;
 
 %hook SBDashBoardViewController
   -(BOOL)_isWakeAnimationInProgress {
@@ -98,6 +228,8 @@ static SBFLockScreenDateView *lockScreeenDateView;
 
 %hook SBFLockScreenDateView
 -(id)initWithFrame:(CGRect)arg1 {
+    [NSTimer scheduledTimerWithTimeInterval:(15 * 60) target:self selector:@selector(updateWeatherForCity) userInfo:nil repeats:YES];
+
     return lockScreeenDateView = %orig;
   }
 
@@ -107,17 +239,39 @@ static SBFLockScreenDateView *lockScreeenDateView;
     [lockScreeenDateView updateWeatherForCity];
   }
 
+  - (void)layoutSubviews {
+  %orig;
+  
+  UIView* timeView = [self valueForKey:@"_timeLabel"];
+  CGRect timeViewRect = timeView.frame;
+  timeViewRect.origin.y = (yOffset);
+  [timeView setFrame:timeViewRect];
+  
+  UIView* dateSubtitleView = [self valueForKey:@"_dateSubtitleView"];
+  CGRect dateSubtitleRect = dateSubtitleView.frame;
+  dateSubtitleRect.origin.y = timeViewRect.size.height + (yOffset) ;//-5;
+  [dateSubtitleView setFrame:dateSubtitleRect];
+  
+  UIView* customSubtitleView = [self valueForKey:@"_customSubtitleView"];
+  CGRect customSubtitleRect = customSubtitleView.frame;
+  customSubtitleRect.origin.y = timeViewRect.size.height + (yOffset);
+  [customSubtitleView setFrame:customSubtitleRect];
+  [customSubtitleView setHidden:NO];
+}
+
 %property (nonatomic, retain) UIView *weatherView;
 %property (retain) UIStackView *weatherStackView;
 %property (retain) UIImageView *weatherConditionImage;
 %property (retain) UILabel *weatherLabel;
 %new
   -(void)setupWeather {
+
+
   	if(!self.weatherLabel) {
-  	  UIView *_dateView = [self valueForKey:@"_dateSubtitleView"];
+  	  UIView *_timeView = [self valueForKey:@"_dateSubtitleView"];
 
       self.weatherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-      [self.weatherLabel setFont:[UIFont systemFontOfSize:24.0 weight:UIFontWeightRegular]];
+      [self.weatherLabel setFont:[UIFont systemFontOfSize:34.0 weight:UIFontWeightRegular]];
       [self.weatherLabel setNumberOfLines:1];
       [self.weatherLabel setText:@""];
       [self.weatherLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
@@ -139,24 +293,24 @@ static SBFLockScreenDateView *lockScreeenDateView;
       [self.weatherStackView addArrangedSubview:self.weatherConditionImage];
       [self.weatherStackView addArrangedSubview:self.weatherLabel];
 
-      [_dateView addSubview:self.weatherStackView];
+      [_timeView addSubview:self.weatherStackView];
 
       NSLayoutConstraint *centreHorizontallyConstraint = [NSLayoutConstraint
                                       constraintWithItem:self.weatherStackView
                                       attribute:NSLayoutAttributeCenterX
                                       relatedBy:NSLayoutRelationEqual
-                                      toItem:_dateView
+                                      toItem:_timeView
                                       attribute:NSLayoutAttributeCenterX
                                       multiplier:1.0
                                       constant:0];
 
       NSLayoutConstraint *YConstraint = [NSLayoutConstraint
                                              constraintWithItem:self.weatherStackView attribute:NSLayoutAttributeTop
-                                             relatedBy:NSLayoutRelationEqual toItem:_dateView attribute:
-                                             NSLayoutAttributeTop multiplier:1.0 constant:25];
+                                             relatedBy:NSLayoutRelationEqual toItem:_timeView attribute:
+                                             NSLayoutAttributeTop multiplier:1.0 constant: 25];
 
-      [_dateView addConstraint:centreHorizontallyConstraint];
-      [_dateView addConstraint:YConstraint];
+      [_timeView addConstraint:centreHorizontallyConstraint];
+      [_timeView addConstraint:YConstraint];
 
       }
   }
@@ -267,3 +421,13 @@ static SBFLockScreenDateView *lockScreeenDateView;
     return [[NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/Weather.framework"] localizedStringForKey:conditionName value:nil table:@"WeatherFrameworkLocalizableStrings"];
   }
 %end
+
+%hook WGWidgetGroupViewController
+- (void)viewDidLayoutSubviews {
+  CGRect origFrame = self.view.frame;
+  origFrame.origin.y = (notifListOffset + 10);
+  [self.view setFrame:origFrame];
+  
+  %orig;
+}
+%end  // %hook WGWidgetGroupViewController

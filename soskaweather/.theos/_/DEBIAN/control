@@ -1,10 +1,10 @@
-Package: com.yourcompany.soskaweather
+Package: hu.soska.weather
 Name: SoskaWeather
 Depends: mobilesubstrate
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Adds weather info to Lock Screen.
 Maintainer: Soós Ádám
 Author: Soós Ádám
 Section: Tweaks
-Version: 0.0.1-26
+Version: 1.0.0
 Installed-Size: 136
