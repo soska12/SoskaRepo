@@ -1,0 +1,10 @@
+Package: hu.soska.weather
+Name: SoskaWeather
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Adds weather information to Lock Screen.
+Maintainer: Sóska <soska@soosadam.com>
+Author: Sóska <soska@soosadam.com>
+Section: Tweaks
+Filename: debs/hu.soska.weather_1.0.0_iphoneos-arm.deb
+MD5sum: e081b3a9bcd8666cade949bdc4c5f7de
